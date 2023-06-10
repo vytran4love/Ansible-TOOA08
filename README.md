@@ -10,7 +10,7 @@ This is example flow chart:
 
 ```mermaid
 graph LR
-  A[Master Branch] -- checkout --> B(feature/NguyenVanA)
+  A[Main Branch] -- checkout --> B(feature/NguyenVanA)
   B -- create dir NguyenVanA--> C(local repo)
   C -- code & commit --> B
 ```
@@ -21,7 +21,7 @@ Please kindly remember that **DO NOT** commit on master branch. We should follow
 1. Clone repo to local machine by using command
 
 ```
-    git clone https://github.com/vytran4love/Ansible-TOAA01
+    git clone https://github.com/vytran4love/Ansible-TOAA08 -> config user/password 
 ```
 2. Checkout branch feature
 
