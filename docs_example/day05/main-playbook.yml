@@ -1,0 +1,9 @@
+---
+# Define host
+- hosts: "{{hostname}}"
+# Get all information  
+  gather_facts: yes
+# Root privileges
+  become: yes
+  roles:
+    - role: external-nginx
