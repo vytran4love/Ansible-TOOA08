@@ -1,0 +1,12 @@
+---
+- name: 'check current dir'
+  shell: 'pwd'
+#  - name: 'create dir'
+#    file:
+#      path: /tmp/{{ dir_name }}
+#      state: directory
+#      mode: '0755'
+#    vars:
+#      dir_name: demo_02
+#    tags:
+#      - create_dir_and_create_file

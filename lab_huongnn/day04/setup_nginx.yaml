@@ -1,0 +1,45 @@
+---
+- hosts: web
+  gather_facts: yes
+  become: yes
+  vars:
+    host_name: web
+  tasks:
+    - name: set up nginx
+      ansible.builtin.apt:
+        name: nginx
+        state: present
+      tags:
+        - set_up_nginx
+
+    - name: config file 
+      copy:
+        src: ~/workspace/ansible/Ansible-TOOA08/lab_huongnn/day04/nginx.cfg
+        dest: /etc/nginx/nginx.cfg
+      notify: 
+        - check config nginx
+        - Restart nginx
+      tags:
+        - config_file_nginx
+
+    - name : Template file
+      template:
+        src: ~/workspace/ansible/Ansible-TOOA08/lab_huongnn/day04/{{ item }}
+        dest: /etc/nginx/sites-available/{{ host_name }}_{{ item }}.conf
+      with_items:
+        - template_nginx.txt.j2
+      notify: 
+        - check config nginx
+        - Restart nginx
+      tags:
+        - config_file_vhost
+
+  handlers:
+    - name: check config nginx
+      command: 'nginx -t'
+      changed_when: false
+    - name: Restart nginx
+      service:
+        name: nginx
+        state: restarted
+
