@@ -1,3 +1,0 @@
----
-- import_playbook: host1.yaml
-- import_playbook: host2.yaml

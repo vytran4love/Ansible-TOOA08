@@ -1,4 +1,0 @@
-- src: https://github.com/nginxinc/ansible-role-nginx.git
-  scm: git
-  name: external-nginx
-  version: 0.24.0
