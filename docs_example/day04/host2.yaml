@@ -1,9 +1,0 @@
----
-- hosts: be_api[1]
-  gather_facts: yes
-  become: yes
-  tasks:
-  - name: 'check status'
-    shell: 'whoami'
-  - name: 'show ip'
-    shell: 'ifconfig -a | grep 172'

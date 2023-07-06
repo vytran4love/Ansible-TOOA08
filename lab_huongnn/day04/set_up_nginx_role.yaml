@@ -1,8 +1,0 @@
----
-- hosts: web
-  gather_facts: yes
-  become: yes
-  vars:
-    host_name: web
-  roles:
-   - role: internal_nginx
