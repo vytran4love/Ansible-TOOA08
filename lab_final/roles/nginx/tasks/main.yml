@@ -18,12 +18,21 @@
   notify:
     - restart nginx
 
-#copy nginx config
+# #copy nginx config using template
+# - name: copy nginx config
+#   template:
+#     src: templates/nginx_conf.j2
+#     dest: /etc/nginx/nginx.conf
+#   notify:
+#     - validate nginx
+#     - restart nginx
+
+# #copy nginx config using file nginx.conf
 - name: copy nginx config
-  template:
-    src: templates/nginx_conf.j2
+  copy:
+    src: nginx.conf
     dest: /etc/nginx/nginx.conf
-  notify:
+  notify: 
     - validate nginx
     - restart nginx
 
@@ -33,31 +42,30 @@
     src: "{{ item.src }}" 
     dest: "{{ item.dest }}"
   with-items:
-    - { src: index.html, dest: /var/www/{{ domain01 }} }
-    - { src: phpinfo.php, dest: /var/www/{{ domain02 }}/index.php }
+    - { src: index.html, dest: "/var/www/{{ domain01 }}/index.html" }
+    - { src: phpinfo.php, dest: "/var/www/{{ domain02 }}/index.php" }
   notify: 
-    - Restart nginx
-
+    - restart nginx
 
 #copy vhost template
 - name : copy vhost template
   template:
     src: nginx_vhost.j2
-    dest: /etc/nginx/sites-available/{{ hostname }}
+    dest: "/etc/nginx/sites-available/{{ item }}"
   with_items:
-    - {{ domain01 }}
-    - {{ domain02 }}
+    - "{{ domain01 }}"
+    - "{{ domain02 }}"
   notify: 
     - reload nginx
 
 #enable vhost
 - name: enable vhost
   file:
-    src: /etc/nginx/sites-available/{{ hostname }}
-    dest: /etc/nginx/sites-enabled/{{ hostname }}
+    src: "/etc/nginx/sites-available/{{ item }}"
+    dest: "/etc/nginx/sites-enabled/{{ item }}"
     state: link
   with_items:
-    - {{ domain01 }}
-    - {{ domain02 }}
+    - "{{ domain01 }}"
+    - "{{ domain02 }}"
   notify:
     - reload nginx
