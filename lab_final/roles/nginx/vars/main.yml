@@ -1,2 +1,4 @@
 ---
 # vars file for nginx
+domain01: "hello.tel4vn.local"
+domain02: "info.tel4vn.local"
