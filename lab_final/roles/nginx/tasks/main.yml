@@ -1,11 +1,11 @@
 ---
 # tasks file for nginx
 #apt-get update
--name: apt-get update
+- name: apt-get update
   become: true
   apt:
     update_cache: yes
-    force_apt_get: yes
+    force_apt_get: True
     cache_valid_time: 3600
 
 #install nginx
@@ -16,23 +16,33 @@
     state: present
     force: yes
   notify:
-  - restart nginx
-
-# #copy nginx config using file nginx.conf
-- name: copy nginx config
-  copy:
-    src: nginx.conf
-    dest: /etc/nginx/nginx.conf
-  notify: 
-    - validate nginx
     - restart nginx
+
+# # #copy nginx config using file nginx.conf
+# - name: copy nginx config
+#   copy:
+#     src: nginx.conf
+#     dest: /etc/nginx/nginx.conf
+#   notify: 
+#     - validate nginx
+#     - restart nginx
+
+#create folder for web
+- name: create folder 
+  file:
+    path: "/var/www/{{ item }}"
+    state: directory
+    mode: '0755'
+  with_items:
+    - "{{ domain01 }}"
+    - "{{ domain02 }}"
 
 #copy file index
 - name: copy file index
   copy: 
     src: "{{ item.src }}" 
     dest: "{{ item.dest }}"
-  with-items:
+  with_items:
     - { src: index.html, dest: "/var/www/{{ domain01 }}/index.html" }
     - { src: phpinfo.php, dest: "/var/www/{{ domain02 }}/index.php" }
   notify: 

@@ -1,7 +1,10 @@
 ---
 - hosts: web
   gather_facts: yes
-  become: yes
+  become: true
+  vars:
+    domain_name: info.tel4vn.local
+    php_version: 8.3
   roles:
    - role: nginx
-   - role: php
+  #  - role: php
