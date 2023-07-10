@@ -1,5 +1,5 @@
 Command run: ansible-playbook -i hosts  main-playbook.yml -v
-###########
+![image](https://github.com/vytran4love/Ansible-TOOA08/assets/107416504/48dc7418-5c36-44f4-8648-484d087238a1)
 Result for: hello.tel4vn.local
 ![image](https://github.com/vytran4love/Ansible-TOOA08/assets/107416504/8abc558f-0ae1-435f-aeb0-c24208b472f4)
 Result for: hello.tel4vn.local
