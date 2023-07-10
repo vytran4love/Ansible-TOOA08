@@ -1,0 +1,36 @@
+---
+- hosts: awx
+  gather_facts: true
+  become: true
+  vars:
+    ansible_ssh_private_key_file: ~/Downloads/ttt_dev_03.pem
+    ansible_ssh_user: ubuntu
+    awx_repo: https://github.com/ansible/awx.git
+    awx_repo_dir: "~/awx"
+    awx_version: "17.1.0"
+    awx_keep_updated: true
+    nodejs_version: "6.x"
+    docker_compose_dir: "~/awx"
+    upgrade_postgres: false
+    pip_package: python3-pip
+    pip_executable: pip3
+    pip_install_packages:
+      - name: pip
+        extra_args: -U
+      - name: docker
+      - name: docker-compose==1.26.0
+      - name: requests==2.14.2
+      - name: wheel
+        version: pip>=21
+  tasks:
+    - name: install package
+      apt:
+        name: python-boto3
+        state: present
+  roles:
+    - external.git
+    - external.ansible
+    - external.docker
+    - external.pip
+    - external.nodejs
+    - external.awx

@@ -1,0 +1,36 @@
+
+➜   ansible-vault create example.yaml
+
+➜   ansible-vault view example.yaml
+Vault password:
+abc-123
+database_password: 123456
+password_key: 123456
+
+➜   ansible-vault view example.yaml
+Vault password:
+abc-123456
+database_password: 123456
+password_key: 123456
+
+➜   ansible-vault view example.yaml --vault-password-file=vault_pass.txt
+abc-123456
+database_password: 123456
+password_key: 123456
+
+➜   ansible localhost -m debug -a var="password_key" -e @example.yaml
+[WARNING]: No inventory was parsed, only implicit localhost is available
+ERROR! Attempting to decrypt but no vault secrets found
+
+➜   ansible localhost -m debug -a var="password_key" -e @example.yaml --vault-password-file=vault_pass.txt
+[WARNING]: No inventory was parsed, only implicit localhost is available
+localhost | SUCCESS => {
+    "password_key": 123456
+}
+
+➜   ansible localhost -m debug -a var="database_password" -e @example.yaml --vault-password-file=vault_pass.txt
+[WARNING]: No inventory was parsed, only implicit localhost is available
+
+localhost | SUCCESS => {
+    "database_password": 123456
+}
