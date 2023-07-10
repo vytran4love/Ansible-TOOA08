@@ -1,0 +1,87 @@
+---
+# tasks file for lab_nginx_php
+- name: Update apt cache
+  apt:
+    update_cache: yes
+
+- name: Install Nginx
+  apt:
+    name: nginx
+    state: latest
+
+- name: Install PHP
+  apt:
+    name:
+      - php-fpm
+      - php-mysql
+      - php-curl
+      - php-gd
+      - php-xml
+      - php-mbstring
+    state: present
+
+- name: create root directories for all vhost
+  file:
+    path: "{{ item }}"
+    owner: www-data
+    group: www-data
+    mode: 755
+    state: directory
+  loop:
+    - /var/www/nginxtel4vn.org
+    - /var/www/phptel4vn.org
+
+- name: Create Nginx configuration file for nginxtel4vn.org
+  template:
+    src: templates/nginxtel4vn.conf.j2
+    dest: /etc/nginx/sites-available/{{ nginx_domain }}.conf
+  notify:
+    - restart nginx
+
+- name: Create Nginx configuration file for phptel4vn.org
+  template:
+    src: templates/phptel4vn.conf.j2
+    dest: /etc/nginx/sites-available/{{ php_domain }}.conf
+  notify:
+    - restart nginx
+
+- name: Enable nginxtel4vn.org virtual host
+  file:
+    src: /etc/nginx/sites-available/{{ nginx_domain }}.conf
+    dest: /etc/nginx/sites-enabled/{{ nginx_domain }}.conf
+    state: link
+  notify:
+    - restart nginx
+
+- name: Enable phptel4vn.org virtual host
+  file:
+    src: /etc/nginx/sites-available/{{ php_domain }}.conf
+    dest: /etc/nginx/sites-enabled/{{ php_domain }}.conf
+    state: link
+  notify:
+    - restart nginx
+
+- name: Create PHP page for phptel4vn.org
+  template:
+    src: templates/phptel4vn_info.php.j2
+    dest: /var/www/{{ php_domain }}/index.php
+
+- name: Create HTML page for nginxtel4vn.org
+  template:
+    src: templates/nginxtel4vn_info.html.j2
+    dest: /var/www/{{ nginx_domain }}/index.html
+
+- name: Remove default Nginx config
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+
+- name: Uncomment setting line in nginx.conf file
+  lineinfile:
+    path: /etc/nginx/nginx.conf
+    regexp: (?i)^\s*#\s*(server_names_hash_bucket_size 64;.*)
+    line: \1
+    backrefs: yes
+  notify:
+    - restart nginx
+    - restart php

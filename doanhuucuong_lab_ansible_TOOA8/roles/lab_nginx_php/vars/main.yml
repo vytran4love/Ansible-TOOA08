@@ -1,0 +1,4 @@
+---
+# vars file for lab_nginx_php
+nginx_domain: nginxtel4vn.org
+php_domain: phptel4vn.org

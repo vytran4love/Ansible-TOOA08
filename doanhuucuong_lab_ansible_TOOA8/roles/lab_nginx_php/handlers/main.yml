@@ -1,0 +1,11 @@
+---
+# handlers file for lab_nginx_php
+- name: restart nginx
+  service:
+    name: nginx
+    state: restarted
+
+- name: restart php
+  service:
+    name: php8.1-fpm
+    state: restarted
