@@ -36,17 +36,15 @@
   with_items:
     - { src: index.html, dest: "/var/www/{{ domain01 }}/index.html" }
     - { src: info.php, dest: "/var/www/{{ domain02 }}/info.php" }
-  notify: 
-    - restart nginx
 
 #copy vhost template
-- name : copy vhost template
+- name : create file vhost
   template:
     src: nginx_vhost.j2
     dest: "/etc/nginx/conf.d/{{ item }}.conf"
   with_items:
-    - domain01
-    - domain02
+    - "{{ domain01 }}"
+    - "{{ domain02 }}"
   vars:
     domain_name: "{{ item }}"
   notify: 

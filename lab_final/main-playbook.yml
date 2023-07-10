@@ -2,8 +2,6 @@
 - hosts: web
   gather_facts: yes
   become: true
-  # vars:
-  #   domain_name: info.tel4vn.local
   roles:
    - role: php
    - role: nginx
