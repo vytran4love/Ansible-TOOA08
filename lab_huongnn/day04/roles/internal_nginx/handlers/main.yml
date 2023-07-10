@@ -1,0 +1,12 @@
+---
+# handlers file for internal_nginx
+#check file config
+- name: check config nginx
+  command: 'nginx -t'
+  changed_when: false
+
+#restart nginx service
+- name: Restart nginx
+  service:
+    name: nginx
+    state: restarted
