@@ -1,7 +1,7 @@
 galaxy_info:
-  author: your name
-  description: your role description
-  company: your company (optional)
+  author: Huong Nguyen
+  description: Install PHP{{ php_version }} and modules
+  company: HNLab
 
   # If the issue tracker for your role is not on github, uncomment the
   # next line and provide a value
@@ -38,6 +38,10 @@ galaxy_info:
   #   - 1.0
   #   - 7
   #   - 99.99
+  platforms:
+  - name: Ubuntu
+    versions:
+    - 22.04.2
 
   galaxy_tags: []
     # List tags for your role here, one per line. A tag is a keyword that describes

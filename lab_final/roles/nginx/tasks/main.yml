@@ -18,15 +18,6 @@
   notify:
     - restart nginx
 
-# # #copy nginx config using file nginx.conf
-# - name: copy nginx config
-#   copy:
-#     src: nginx.conf
-#     dest: /etc/nginx/nginx.conf
-#   notify: 
-#     - validate nginx
-#     - restart nginx
-
 #create folder for web
 - name: create folder 
   file:
@@ -44,7 +35,7 @@
     dest: "{{ item.dest }}"
   with_items:
     - { src: index.html, dest: "/var/www/{{ domain01 }}/index.html" }
-    - { src: phpinfo.php, dest: "/var/www/{{ domain02 }}/index.php" }
+    - { src: info.php, dest: "/var/www/{{ domain02 }}/info.php" }
   notify: 
     - restart nginx
 
@@ -52,21 +43,12 @@
 - name : copy vhost template
   template:
     src: nginx_vhost.j2
-    dest: "/etc/nginx/sites-available/{{ item }}"
+    dest: "/etc/nginx/conf.d/{{ item }}.conf"
   with_items:
-    - "{{ domain01 }}"
-    - "{{ domain02 }}"
+    - domain01
+    - domain02
+  vars:
+    domain_name: "{{ item }}"
   notify: 
-    - reload nginx
-
-#enable vhost
-- name: enable vhost
-  file:
-    src: "/etc/nginx/sites-available/{{ item }}"
-    dest: "/etc/nginx/sites-enabled/{{ item }}"
-    state: link
-  with_items:
-    - "{{ domain01 }}"
-    - "{{ domain02 }}"
-  notify:
-    - reload nginx
+    - validate nginx
+    - restart nginx

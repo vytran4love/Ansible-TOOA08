@@ -1,2 +1,32 @@
 ---
 # tasks file for php
+#apt-get update
+- name: apt-get update
+  become: true
+  apt:
+    update_cache: yes
+    force_apt_get: True
+    cache_valid_time: 3600
+
+#install php
+- name: install php{{ php_version }} and modules
+  apt:
+    name: '{{item}}'
+    state: present
+  loop:
+    - php{{ php_version }}
+    - php{{ php_version }}-fpm
+    - php{{ php_version }}-mysql
+    - php-common
+    - php{{ php_version }}-cli
+    - php{{ php_version }}-common
+    - php{{ php_version }}-opcache
+    - php{{ php_version }}-readline 
+    - php{{ php_version }}-mbstring 
+    - php{{ php_version }}-xml 
+    - php{{ php_version }}-gd 
+    - php{{ php_version }}-curl
+    - php{{ php_version }}-soap 
+    - php{{ php_version }}-mbstring -y
+  notify:
+    - restart php-fpm
