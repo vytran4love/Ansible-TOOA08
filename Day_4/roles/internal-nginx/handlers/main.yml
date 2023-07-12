@@ -1,0 +1,9 @@
+---
+- name: check config
+  command: nginx -t
+  changed_when: false #Dung khi ket qua tra ve False
+
+- name: start service
+  service:
+   name: nginx
+   state: started

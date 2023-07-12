@@ -1,0 +1,18 @@
+---
+- name: Install Nginx
+  apt: name=nginx state=latest
+  notify: 
+    - check config
+    - start service
+  tags: install
+
+- name: config file
+  template:
+    src: template_nginx.j2
+    dest: /etc/nginx/sites-available/{{ host_name }}.conf 
+  with_items:
+    - template_nginx
+  notify:
+    - check config
+    - start service
+  tags: operation

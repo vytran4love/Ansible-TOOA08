@@ -1,0 +1,11 @@
+server {
+    listen 80;
+    server_name hello.example.domain;
+
+    root /var/www/hello.example.domain;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}

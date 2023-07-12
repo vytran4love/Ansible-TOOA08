@@ -1,0 +1,47 @@
+---
+- name: Install PHP and required modules
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - php-fpm
+    - php-mysql
+    - php-cli
+    - php-mbstring
+    - php-xml
+
+- name: Start and enable PHP-FPM service
+  service:
+    name: php{{ php_version }}-fpm
+    state: started
+    enabled: yes
+
+- name: Copy info.php file to server
+  copy:
+    src: info.php
+    dest: /var/www/info.example.domain/info.php
+    owner: www-data
+    group: www-data
+    mode: '0644'
+
+- name: Create directory for info.example.domain content
+  file:
+    path: /var/www/info.example.domain
+    state: directory
+    mode: '0755'
+    owner: www-data
+    group: www-data
+
+- name: Copy info.example.domain virtual host configuration
+  template:
+    src: info.example.domain.conf.j2
+    dest: /etc/nginx/sites-available/info.example.domain
+  notify: Reload Nginx
+
+- name: Enable info.example.domain virtual host
+  file:
+    src: /etc/nginx/sites-available/info.example.domain
+    dest: /etc/nginx/sites-enabled/info.example.domain
+    state: link
+  notify: Reload Nginx
+

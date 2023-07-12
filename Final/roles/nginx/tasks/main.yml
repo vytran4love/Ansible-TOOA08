@@ -1,0 +1,28 @@
+- name: Copy hello.example.domain virtual host configuration
+  template:
+    src: hello.example.domain.conf.j2
+    dest: /etc/nginx/sites-available/hello.example.domain
+  notify: Reload Nginx
+
+- name: Enable hello.example.domain virtual host
+  file:
+    src: /etc/nginx/sites-available/hello.example.domain
+    dest: /etc/nginx/sites-enabled/hello.example.domain
+    state: link
+  notify: Reload Nginx
+
+- name: Create directory for hello.example.domain content
+  ansible.builtin.file:
+    path: /var/www/hello.example.domain
+    state: directory
+    mode: '0755'
+    owner: www-data
+    group: www-data
+
+- name: Copy index.html to hello.example.domain directory
+  copy:
+    src: index.html
+    dest: /var/www/hello.example.domain/index.html
+    owner: www-data
+    group: www-data
+    mode: '0644'

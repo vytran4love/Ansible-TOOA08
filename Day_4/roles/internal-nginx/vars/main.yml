@@ -1,0 +1,3 @@
+---
+# vars file for internal-nginx
+host_name: web

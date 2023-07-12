@@ -1,0 +1,16 @@
+---
+- name: Install nginx and PHP
+  hosts: slave
+  gather_facts: yes
+  become: true
+  vars:
+    php_version: "7.4"
+  roles:
+   - nginx
+   - php
+
+  handlers:
+  - name: Reload Nginx
+    service:
+      name: nginx
+      state: reloaded

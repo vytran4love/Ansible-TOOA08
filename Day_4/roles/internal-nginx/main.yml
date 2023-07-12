@@ -1,0 +1,7 @@
+---
+- name: Day_4
+  hosts: nginx
+  gather_facts: yes
+  become: yes
+  roles:
+   - name: internal_nginx 

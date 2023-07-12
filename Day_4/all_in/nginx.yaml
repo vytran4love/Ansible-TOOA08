@@ -1,0 +1,35 @@
+---
+- name: Day_4_Playbook
+  hosts: nginx
+  become: yes
+  vars:
+          host_name: web
+  tasks:
+          - name: Install Nginx
+            apt: name=nginx state=latest
+            notify: 
+              - check config
+              - start service
+            tags: install
+
+          - name: config file
+            template:
+                    src: ./{{ item }}.j2
+                    dest: /etc/nginx/sites-available/{{ host_name}}.conf 
+            with_items:
+                    - template_nginx
+            notify:
+                    - check config
+                    - start service
+            tags: operation
+
+  handlers:
+          - name: check config
+            command: nginx -t
+            changed_when: false #Dung khi ket qua tra ve False
+
+          - name: start service
+            service:
+                    name: nginx
+                    state: started
+
